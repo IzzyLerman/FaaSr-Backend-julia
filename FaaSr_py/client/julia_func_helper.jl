@@ -6,13 +6,12 @@ function faasr_import_function_walk(func_name, directory=".")
         "julia_user_func_entry.jl"
     ]
 
-    # TODO: only include files that declare the user function
     fn = Symbol(func_name)
 
     for (path, dirs, files) in Base.Filesystem.walkdir(directory)
         for file in files
             if Base.endswith(file, ".jl") && !(file in ignore_files)
-                include("$file")
+                include("$path/$file")
                 try
                     user_func = getfield(Main, fn)
                     return user_func
