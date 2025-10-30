@@ -45,6 +45,7 @@ if abspath(PROGRAM_FILE) == @__FILE__
     args = JSON.parse(args_raw)
     invocationID = ARGS[3]
     run_julia_function(func_name, args, invocationID)
+end
 
     
 

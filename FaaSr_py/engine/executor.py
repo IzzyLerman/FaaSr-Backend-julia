@@ -134,7 +134,7 @@ class Executor:
                 sys.exit(1)
 
             if func_res != 0:
-                logger.error(f"Julia function failed: {julia_func.stdout}")
+                logger.error(f"Julia function failed: {julia_func.stdout} {julia_func.stderr}")
                 raise RuntimeError(
                     f"non-zero exit code ({func_res!r}) from user function"
                 )
