@@ -107,7 +107,7 @@ class Executor:
                 ]
 
                 # Copy each file into the current working directory
-                for src in r_files:
+                for src in julia_files:
                     dst = Path(src.name)
                     shutil.copy(src, dst)
 
