@@ -22,10 +22,14 @@ function run_julia_function(func_name, args, invocationID)
         return
     end
 
-    result = Base.Dict()
+    result = Dict()
 
     try
-        result = user_function(args)
+        arg_array = values(args)
+        return_value = user_function(arg_array...)
+        if return_value != nothing
+            result = return_value
+        end
     catch e
         err_msg = string("Error while running user function: ", e)
         println(err_msg)
