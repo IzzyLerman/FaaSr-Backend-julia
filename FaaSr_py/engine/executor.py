@@ -122,7 +122,7 @@ class Executor:
                             func_name,
                             json.dumps(user_args),
                             self.faasr["InvocationID"],
-                        ]
+                        ], capture_output=True, text=True
                     )
                 except Exception as e:
                     logger.error(f"Error running Julia function: {e}")
@@ -134,6 +134,7 @@ class Executor:
                 sys.exit(1)
 
             if func_res != 0:
+                logger.error(f"Julia function failed: {julia_func.stdout}")
                 raise RuntimeError(
                     f"non-zero exit code ({func_res!r}) from user function"
                 )
