@@ -25,7 +25,7 @@ function run_julia_function(func_name, args, invocationID)
     result = Dict()
 
     try
-        arg_array = values(args)
+        arg_array = collect(values(args))
         return_value = user_function(arg_array...)
         if return_value != nothing
             result = return_value
