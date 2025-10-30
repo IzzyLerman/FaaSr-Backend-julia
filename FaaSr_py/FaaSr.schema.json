@@ -74,7 +74,8 @@
               "type": "string",
               "enum": [
                 "Python",
-                "R"
+                "R",
+                "Julia"
               ]
             },
             "RequiresVM": {
