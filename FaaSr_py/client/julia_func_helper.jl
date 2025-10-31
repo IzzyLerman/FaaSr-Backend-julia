@@ -11,9 +11,11 @@ function faasr_import_function_walk(func_name, directory=".")
     for (path, dirs, files) in Base.Filesystem.walkdir(directory)
         for file in files
             if Base.endswith(file, ".jl") && !(file in ignore_files)
-                Main.include("$path/$file")
+                include("$path/$file")
                 try
-                    user_func = getfield(Main, fn)
+                    user_func = eval(fn) 
+                    println("Found: ", user_func)
+                    println("Methods: ", methods(user_func))
                     return user_func
                 catch e
                 end
