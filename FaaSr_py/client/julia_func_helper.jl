@@ -14,9 +14,7 @@ function faasr_import_function_walk(func_name, directory=".")
                 include("$path/$file")
                 try
                     user_func = eval(fn) 
-                    println("Found: ", user_func)
-                    println("Methods: ", methods(user_func))
-                    return user_func
+                    return fn
                 catch e
                 end
             end
