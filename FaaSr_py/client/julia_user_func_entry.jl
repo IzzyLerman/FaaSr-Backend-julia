@@ -22,10 +22,18 @@ function run_julia_function(func_name, args, invocationID)
         return
     end
 
+
+
     result = Dict()
 
     try
         arg_array = collect(values(args))
+
+        println("user_function type: ", typeof(user_function))
+        println("Is callable: ", applicable(user_function, arg_array...))
+        println("arg_array: ", arg_array)
+        println("arg types: ", typeof.(arg_array))
+
         return_value = user_function(arg_array...)
         if return_value != nothing
             result = return_value
