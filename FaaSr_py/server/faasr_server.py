@@ -49,11 +49,13 @@ class Result(BaseModel):
     FunctionResult: bool | None = None
     Error: bool | None = None
     Message: str | None = None
+    Traceback: str | None = None
 
 
 class Exit(BaseModel):
     Error: bool | None = None
     Message: str | None = None
+    Traceback: str | None = None
 
 
 def register_request_handler(faasr_payload):
