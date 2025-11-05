@@ -67,6 +67,7 @@ def register_request_handler(faasr_payload):
     """
     return_val = None
     message = None
+    traceback = None
     error = False
 
     @faasr_api.post("/faasr-action")
@@ -131,10 +132,11 @@ def register_request_handler(faasr_payload):
         """
         Handler for FaaSr function exit values
         """
-        nonlocal error, message
+        nonlocal error, message, traceback
         if exit_obj.Error:
             error = True
             message = exit_obj.Message
+            traceback = exit_obj.Traceback
         flush_s3_log()
         return Response(Success=True)
 
@@ -144,7 +146,12 @@ def register_request_handler(faasr_payload):
         Handler to get the return value from the FaaSr function
         """
         flush_s3_log()
-        return Result(FunctionResult=return_val, Error=error, Message=message)
+        return Result(
+            FunctionResult=return_val,
+            Error=error,
+            Message=message,
+            Traceback=traceback,
+        )
 
 
 @faasr_api.get("/faasr-echo")
