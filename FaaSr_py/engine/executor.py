@@ -196,11 +196,12 @@ class Executor:
         
         try:
             # Import built-in functions
-            from FaaSr_py.builtin_functions import vm_start, vm_stop
+            from FaaSr_py.builtin_functions import vm_start, vm_stop , vm_poll
             
             builtin_functions = {
                 "vm_start": vm_start,
-                "vm_stop": vm_stop
+                "vm_stop": vm_stop,
+                "vm_poll":vm_poll
             }
             
             if builtin_func_name not in builtin_functions:
@@ -292,11 +293,7 @@ class Executor:
         Returns:
             dict -- user function arguments
         """
-        args = self.faasr["ActionList"][action_name]["Arguments"]
-        if args is None:
-            return {}
-        else:
-            return args
+        return self.faasr["ActionList"][action_name].get("Arguments", {}) or {}
 
     def get_function_return(self, port=8000):
         """
