@@ -6,7 +6,7 @@ import JSON
 function parse_response(res, rpc_id)
     res_body = String(res.body)
     if get(JSON.parse(res_body), "Success", false)
-        exit(0)
+        return true
     else
         err_msg = "{\"$rpc_id\": \"Request to FaaSr RPC failed\"}"
         println(err_msg)
