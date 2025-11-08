@@ -3,7 +3,8 @@ import HTTP
 import JSON
 
 function parse_response(res, rpc_id)
-    if get(JSON.parse(res), "Success", false)
+    res_body = String(res.body)
+    if get(JSON.parse(res_body), "Success", false)
         exit(0)
     else
         err_msg = "{\"$rpc_id\": \"Request to FaaSr RPC failed\"}"
@@ -16,7 +17,7 @@ function handle_response_error(e, rpc_id)
     if isa(e, HTTP.ExceptionRequest.StatusError)
         err_msg = "{{\"$rpc_id\": \"HTTP request returned an exception:\n$(e.response) ($(e.status))\"}}"
     else
-        err_msg = "{{\"$rpc_id\": \"Error making request to RPC server: $(typeof(e))\"}}"
+        err_msg = "{{\"$rpc_id\": \"Error making request to RPC server: $(typeof(e)): $e\"}}"
     end
     println(err_msg)
     exit(1)
@@ -105,14 +106,13 @@ function faasr_log(log_message)
     end
 end
 
-#==function faasr_get_folder_list(server_name="", prefix=""):
-    rpc_id="faasr_delete_file"
+function faasr_get_folder_list(server_name="", prefix="")
+    rpc_id="faasr_get_folder_list"
     request_json = Dict(
         "ProcedureID"=>rpc_id,
         "Arguments"=>Dict(
-            "remote_file"=>string(remote_file),
             "server_name"=>server_name,
-            "remote_folder"=>string(remote_folder) 
+            "prefix"=>string(prefix) 
         )
     )
 
@@ -123,7 +123,6 @@ end
         handle_response_error(e, rpc_id)
     end
 end
-==#
 
 
 function faasr_return(return_value=nothing)
