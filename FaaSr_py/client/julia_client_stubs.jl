@@ -104,7 +104,7 @@ function faasr_log(log_message)
     )
 
     try
-        res = HTTP.request("POST","http://127.0.0.1:8000/faasr-action", [], JSON.json(return_json))
+        res = HTTP.request("POST","http://127.0.0.1:8000/faasr-action", [], JSON.json(request_json))
         parse_response(res, rpc_id)
     catch e
         handle_response_error(e, rpc_id)
