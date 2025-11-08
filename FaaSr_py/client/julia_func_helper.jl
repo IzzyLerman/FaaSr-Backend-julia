@@ -12,9 +12,12 @@ function faasr_import_function_walk(func_name, directory=".")
         for file in files
             if Base.endswith(file, ".jl") && !(file in ignore_files)
                 include("$path/$file")
+                println("included $path/$file")
                 try
-                    user_func = eval(fn) 
-                    return fn
+                    println("function $func_name: $(isdefined(Main, fn))")
+                    if isdefined(Main, fn)
+                        return fn
+                    end
                 catch e
                 end
             end
