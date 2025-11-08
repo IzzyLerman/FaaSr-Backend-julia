@@ -26,7 +26,7 @@ end
 function faasr_put_file(local_file, remote_file, server_name="", local_folder=".", remote_folder=".")
     rpc_id="faasr_put_file"
     request_json = Dict(
-        "ProcedureId"=>rpc_id,
+        "ProcedureID"=>rpc_id,
         "Arguments"=>Dict(
             "local_file"=>string(local_file),
             "remote_file"=>string(remote_file),
@@ -47,7 +47,7 @@ end
 function faasr_get_file(local_file, remote_file, server_name="", local_folder=".", remote_folder=".")
     rpc_id="faasr_get_file"
     request_json = Dict(
-        "ProcedureId"=>rpc_id,
+        "ProcedureID"=>rpc_id,
         "Arguments"=>Dict(
             "local_file"=>string(local_file),
             "remote_file"=>string(remote_file),
@@ -68,7 +68,7 @@ end
 function faasr_delete_file(remote_file, server_name="", remote_folder=".")
     rpc_id="faasr_delete_file"
     request_json = Dict(
-        "ProcedureId"=>rpc_id,
+        "ProcedureID"=>rpc_id,
         "Arguments"=>Dict(
             "remote_file"=>string(remote_file),
             "server_name"=>server_name,
@@ -103,8 +103,28 @@ function faasr_log(log_message)
     catch e
         handle_response_error(e, rpc_id)
     end
-
 end
+
+#==function faasr_get_folder_list(server_name="", prefix=""):
+    rpc_id="faasr_delete_file"
+    request_json = Dict(
+        "ProcedureID"=>rpc_id,
+        "Arguments"=>Dict(
+            "remote_file"=>string(remote_file),
+            "server_name"=>server_name,
+            "remote_folder"=>string(remote_folder) 
+        )
+    )
+
+    try
+        res = HTTP.request("POST","http://127.0.0.1:8000/faasr-action", [], JSON.json(request_json))
+        parse_response(res, rpc_id)
+    catch e
+        handle_response_error(e, rpc_id)
+    end
+end
+==#
+
 
 function faasr_return(return_value=nothing)
     return_json = Dict("FunctionResult"=>return_value)
