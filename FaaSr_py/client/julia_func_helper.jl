@@ -1,5 +1,11 @@
 import Base
 
+#==
+# Searches recursively for julia files starting in directory and includes them 
+# Returns a symbol storing the name of user_func if successful 
+# Returns nothing if func_name is not found
+=#
+
 function faasr_import_function_walk(func_name, directory=".")
     ignore_files = [
         "julia_client_stubs.jl",
@@ -16,8 +22,6 @@ function faasr_import_function_walk(func_name, directory=".")
             if Base.endswith(file, ".jl") && !(file in ignore_files)
                 try
                     include("$path/$file")
-                    println("included $path/$file")
-                    println("function $func_name: $(isdefined(Main, fn))")
                     if isdefined(Main, fn)
                         return fn
                     end
