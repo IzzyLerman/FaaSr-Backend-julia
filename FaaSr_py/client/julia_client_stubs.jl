@@ -188,7 +188,7 @@ function faasr_return(return_value=nothing)
     rpc_id="faasr_return"
 
     try
-        res = HTTP.request("POST","http://127.0.0.1:8000/faasr-action", [], JSON.json(return_json))
+        res = HTTP.request("POST","http://127.0.0.1:8000/faasr-return", [], JSON.json(return_json))
         parse_response(res, rpc_id)
     catch e
         handle_response_error(e, rpc_id)
@@ -200,7 +200,7 @@ function faasr_exit(message=nothing, error=true)
     rpc_id="faasr_exit"
 
     try
-        res = HTTP.request("POST","http://127.0.0.1:8000/faasr-action", [], JSON.json(exit_json))
+        res = HTTP.request("POST","http://127.0.0.1:8000/faasr-exit", [], JSON.json(exit_json))
         parse_response(res, rpc_id)
     catch e
         handle_response_error(e, rpc_id)
