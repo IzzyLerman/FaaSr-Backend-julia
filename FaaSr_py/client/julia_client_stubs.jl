@@ -2,16 +2,18 @@ using Base
 import HTTP
 import JSON
 
+# Parse the response and check for 'success' field
 function parse_response(res, rpc_id)
     res_body = String(res.body)
     if get(JSON.parse(res_body), "Success", false)
-        exit(0)
+        return true
     else
         err_msg = "{\"$rpc_id\": \"Request to FaaSr RPC failed\"}"
         println(err_msg)
         exit(1)
     end
 end
+
 
 function handle_response_error(e, rpc_id)
     if isa(e, HTTP.ExceptionRequest.StatusError)
@@ -45,6 +47,7 @@ function faasr_put_file(local_file, remote_file, server_name="", local_folder=".
     end
 end
 
+
 function faasr_get_file(local_file, remote_file, server_name="", local_folder=".", remote_folder=".")
     rpc_id="faasr_get_file"
     request_json = Dict(
@@ -66,6 +69,7 @@ function faasr_get_file(local_file, remote_file, server_name="", local_folder=".
     end
 end
 
+
 function faasr_delete_file(remote_file, server_name="", remote_folder=".")
     rpc_id="faasr_delete_file"
     request_json = Dict(
@@ -85,6 +89,7 @@ function faasr_delete_file(remote_file, server_name="", remote_folder=".")
     end
 end
 
+
 function faasr_log(log_message)
     if (log_message == nothing || log_message == "")
         err_msg = "{\"faasr_log\": \"ERROR -- empty log_message not allowed\"}"
@@ -99,12 +104,13 @@ function faasr_log(log_message)
     )
 
     try
-        res = HTTP.request("POST","http://127.0.0.1:8000/faasr-action", [], JSON.json(return_json))
+        res = HTTP.request("POST","http://127.0.0.1:8000/faasr-action", [], JSON.json(request_json))
         parse_response(res, rpc_id)
     catch e
         handle_response_error(e, rpc_id)
     end
 end
+
 
 function faasr_get_folder_list(server_name="", prefix="")
     rpc_id="faasr_get_folder_list"
@@ -118,7 +124,59 @@ function faasr_get_folder_list(server_name="", prefix="")
 
     try
         res = HTTP.request("POST","http://127.0.0.1:8000/faasr-action", [], JSON.json(request_json))
-        parse_response(res, rpc_id)
+        body = JSON.parse(String(res.body))
+        return body["Data"]["folder_list"] 
+    catch e
+        handle_response_error(e, rpc_id)
+    end
+end
+
+
+function faasr_rank()
+    rpc_id="faasr_rank"
+    request_json = Dict(
+        "ProcedureID"=>rpc_id,
+        "Arguments"=>Dict()
+    )
+
+    try
+        res = HTTP.request("POST","http://127.0.0.1:8000/faasr-action", [], JSON.json(request_json))
+        body = JSON.parse(String(res.body))
+        return body["Data"]
+    catch e
+        handle_response_error(e, rpc_id)
+    end
+end
+
+
+function faasr_get_s3_creds()
+    rpc_id="faasr_get_s3_creds"
+    request_json = Dict(
+        "ProcedureID"=>rpc_id,
+        "Arguments"=>Dict()
+    )
+
+    try
+        res = HTTP.request("POST","http://127.0.0.1:8000/faasr-action", [], JSON.json(request_json))
+        body = JSON.parse(String(res.body))
+        return body["Data"]["s3_creds"]
+    catch e
+        handle_response_error(e, rpc_id)
+    end
+end
+
+
+function faasr_invocation_id()
+    rpc_id="faasr_invocation_id"
+    request_json = Dict(
+        "ProcedureID"=>rpc_id,
+        "Arguments"=>Dict()
+    )
+
+    try
+        res = HTTP.request("POST","http://127.0.0.1:8000/faasr-action", [], JSON.json(request_json))
+        body = JSON.parse(String(res.body))
+        return body["Data"]["invocation_id"]
     catch e
         handle_response_error(e, rpc_id)
     end
@@ -130,7 +188,7 @@ function faasr_return(return_value=nothing)
     rpc_id="faasr_return"
 
     try
-        res = HTTP.request("POST","http://127.0.0.1:8000/faasr-action", [], JSON.json(return_json))
+        res = HTTP.request("POST","http://127.0.0.1:8000/faasr-return", [], JSON.json(return_json))
         parse_response(res, rpc_id)
     catch e
         handle_response_error(e, rpc_id)
@@ -142,7 +200,7 @@ function faasr_exit(message=nothing, error=true)
     rpc_id="faasr_exit"
 
     try
-        res = HTTP.request("POST","http://127.0.0.1:8000/faasr-action", [], JSON.json(exit_json))
+        res = HTTP.request("POST","http://127.0.0.1:8000/faasr-exit", [], JSON.json(exit_json))
         parse_response(res, rpc_id)
     catch e
         handle_response_error(e, rpc_id)
