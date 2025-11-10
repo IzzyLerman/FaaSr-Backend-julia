@@ -28,9 +28,7 @@ function run_julia_function(func_name, args, invocationID)
     try
         arg_array = collect(values(args))
 
-        fn_expr = arg_array == [] ? 
-            Expr(:call, user_function) :
-            Expr(:call, user_function, arg_array...)
+        fn_expr = Expr(:call, user_function, arg_array...)
         return_value = eval(fn_expr) 
 
         if return_value != nothing

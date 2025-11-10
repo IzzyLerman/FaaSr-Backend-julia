@@ -15,15 +15,23 @@ function faasr_import_function_walk(func_name, directory=".")
 
     fn = Symbol(func_name)
 
-    # TODO ignore files without user function
 
     for (path, dirs, files) in Base.Filesystem.walkdir(directory)
         for file in files
             if Base.endswith(file, ".jl") && !(file in ignore_files)
                 try
-                    include("$path/$file")
-                    if isdefined(Main, fn)
-                        return fn
+                    fn_present = false
+                    open("$path/$file") do f
+                        if contains(read(f, String), "function $func_name")
+                            fn_present = true
+                            #println("Found $func_name in $path/$file")
+                        end
+                    end
+                    if fn_present
+                        include("$path/$file")
+                        if isdefined(Main, fn)
+                            return fn
+                        end
                     end
                 catch e
                 end
