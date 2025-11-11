@@ -25,6 +25,7 @@ class Executor:
     """
 
     def __init__(self, faasr: FaaSrPayload):
+        print(f"Initializing Executor with faasr: {faasr}")
         if not isinstance(faasr, FaaSrPayload):
             err_msg = "initializer for Executor must be FaaSr instance"
             logger.error(err_msg)

@@ -39,6 +39,7 @@ class FaaSrPayload:
     """
 
     def __init__(self, url, overwritten=None, token=None):
+        print(f"Initializing FaaSrPayload with url: {url}, overwritten: {overwritten}, token: {token}")
         # without PAT, larger workflows run the risk
         # of hitting rate limits when fetching payload
         if token is None:
