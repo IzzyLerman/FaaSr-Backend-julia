@@ -33,6 +33,7 @@ faasr_run_user_function <- function(func_name, user_args){
     faasr_log(nat_err_msg)
     message(err_msg)
     trace <- .traceback()
+    faasr_log(trace)
     faasr_exit(traceback=capture.output(trace))
     }
   )
