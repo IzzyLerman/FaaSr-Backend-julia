@@ -28,24 +28,12 @@ faasr_run_user_function <- function(func_name, user_args){
   # Use do.call to use user_function with arguments
   # try do.call and if there's an error, return error message and stop the function
   faasr_result <- tryCatch(expr=do.call(user_function, user_args), error=function(e){
-    # Capture the full stack trace
-    call_stack <- sys.calls()
-    stack_trace <- paste(lapply(call_stack, function(call) {
-      paste0("  ", deparse(call, width.cutoff = 500L))
-    }), collapse="\n")
-    
-    # Combine error message with stack trace
-    full_traceback <- paste0(
-      "Error: ", as.character(e), "\n",
-      "Traceback (most recent call last):\n",
-      stack_trace
-    )
-    
     nat_err_msg <- paste0('\"faasr_user_function\":Errors in the user function - ', as.character(e))
     err_msg <- paste0('{\"faasr_user_function\":\"Errors in the user function, ', func_name, ', check the log for the detail\"}', "\n")
     faasr_log(nat_err_msg)
     message(err_msg)
-    faasr_exit(message=as.character(e), traceback=full_traceback)
+    trace <- .traceback()
+    faasr_exit(traceback=capture.output(trace))
     }
   )
 
