@@ -30,9 +30,11 @@ faasr_run_user_function <- function(func_name, user_args){
   faasr_result <- withCallingHandlers(expr=do.call(user_function, user_args), error=function(e){
     nat_err_msg <- paste0('\"faasr_user_function\":Errors in the user function - ', as.character(e))
     err_msg <- paste0('{\"faasr_user_function\":\"Errors in the user function, ', func_name, ', check the log for the detail\"}', "\n")
+    trace <- sys.calls()
     faasr_log(nat_err_msg)
+    faasr_log(trace)
     message(err_msg)
-    faasr_exit(traceback=sys.calls())
+    faasr_exit(traceback=trace)
     }
   )
 
