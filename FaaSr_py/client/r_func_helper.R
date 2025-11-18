@@ -32,9 +32,7 @@ faasr_run_user_function <- function(func_name, user_args){
     err_msg <- paste0('{\"faasr_user_function\":\"Errors in the user function, ', func_name, ', check the log for the detail\"}', "\n")
     faasr_log(nat_err_msg)
     message(err_msg)
-    trace <- .traceback()
-    faasr_log(trace)
-    faasr_exit(traceback=capture.output(trace))
+    faasr_exit()
     }
   )
 
