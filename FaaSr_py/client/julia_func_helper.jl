@@ -24,7 +24,6 @@ function faasr_import_function_walk(func_name, directory=".")
                     open("$path/$file") do f
                         if contains(read(f, String), "function $func_name")
                             fn_present = true
-                            #println("Found $func_name in $path/$file")
                         end
                     end
                     if fn_present
