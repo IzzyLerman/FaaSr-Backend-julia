@@ -16,23 +16,26 @@ function faasr_import_function_walk(func_name, directory=".")
     fn = Symbol(func_name)
 
 
+    faasr_log("Starting user function search: $func_name")
     for (path, dirs, files) in Base.Filesystem.walkdir(directory)
         for file in files
             if Base.endswith(file, ".jl") && !(file in ignore_files)
-                try
-                    fn_present = false
-                    open("$path/$file") do f
-                        if contains(read(f, String), "function $func_name")
-                            fn_present = true
-                        end
+                fn_present = false
+                open("$path/$file") do f
+                    if contains(read(f, String), "function $func_name")
+                        fn_present = true
                     end
-                    if fn_present
+                end
+                if fn_present
+                    try
                         include("$path/$file")
-                        if isdefined(Main, fn)
-                            return fn
-                        end
+                    catch e
+                        faasr_log("Error while including user function: $e")
+                        return nothing
                     end
-                catch e
+                    if isdefined(Main, fn)
+                        return fn
+                    end
                 end
             end
         end
