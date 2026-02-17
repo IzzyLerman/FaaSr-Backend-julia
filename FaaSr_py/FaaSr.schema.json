@@ -579,6 +579,22 @@
         }
       }
     },
+    "JuliaPkgPackage": {
+      "description": "User Pkg packages",
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "minLength": 1
+      },
+      "patternProperties": {
+        "": {
+          "type": [
+            "string",
+            "array"
+          ]
+        }
+      }
+    },
     "FunctionGitHubPackage": {
       "description": "User packages from github Repository",
       "type": "object",
