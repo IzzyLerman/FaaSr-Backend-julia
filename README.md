@@ -14,12 +14,6 @@ To use FaaSr, you simply need to create a workflow JSON (see below) and host you
 # Workflow builder
 The GUI for creating a workflow can be found here: [FaaSr-JSON-Builder](https://faasr.io/FaaSr-workflow-builder/)
 
-# Basic structure of an action in the workflow:
-1. Workflow is validated
-2. InvocationID is assigned if one is not present
-3. User function is executed
-4. Subsequent actions are invoked
-
 # Prebuilt containers
 ### GitHub Actions
 ```
