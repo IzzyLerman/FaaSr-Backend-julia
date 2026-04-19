@@ -1,4 +1,5 @@
 import importlib
+import importlib.util
 import logging
 import os
 import sys
@@ -70,6 +71,10 @@ def faasr_import_function_walk(func_name, directory="."):
         "faasr_start_invoke_github_actions.py",
     ]
     directory = os.path.abspath(directory)
+    ## DEBUG
+    print(os.listdir("/tmp/packages"))
+    importlib.invalidate_caches()
+    importlib.import_module("pandas")
 
     if directory not in sys.path:
         sys.path.insert(0, directory)
