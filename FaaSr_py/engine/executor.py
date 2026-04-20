@@ -128,6 +128,7 @@ class Executor:
                     logger.error(f"Error running Julia function: {julia_func.stdout} {julia_func.stderr}")
                     sys.exit(1)
                 func_res = julia_func.returncode
+                func_stdout = julia_func.stdout
 
             else:
                 logger.error(f"Unkown function type: {func_type}")
@@ -135,7 +136,7 @@ class Executor:
 
             if func_res != 0:
                 raise RuntimeError(
-                    f"non-zero exit code ({func_res!r}) from user function"
+                    f"non-zero exit code ({func_res!r}) from user function\nstdout: {func_stdout}"
                 )
         else:
             logger.info("SKIPPING USER FUNCTION")
