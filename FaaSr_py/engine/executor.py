@@ -124,8 +124,11 @@ class Executor:
                             self.faasr["InvocationID"],
                         ], capture_output=True, text=True
                     )
+                    logger.error(f"Function stdout: {julia_func.stdout}")
+                    logger.error(f"Function stderr: {julia_func.stderr}")
+                    logger.error(f"Function return code: {julia_func.returncode}")
                 except Exception as e:
-                    logger.error(f"Error running Julia function: {julia_func.stdout} {julia_func.stderr}")
+                    logger.error(f"Error running Julia function: {e}")
                     sys.exit(1)
                 func_res = julia_func.returncode
 
