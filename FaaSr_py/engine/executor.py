@@ -98,6 +98,10 @@ class Executor:
                 func_res = r_func.returncode
             elif func_type == "Julia":
                 # path to Julia function handler
+
+                print(f"julia depot: {os.listdir("/tmp/julia_depot")}")
+                print(f"julia depot / packages: {os.listdir("/tmp/julia_depot/packages")}")
+
                 client_dir = Path(__file__).parent.parent / "client"
 
                 julia_files = [
